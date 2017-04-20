@@ -1,0 +1,35 @@
+In my experiment, the BML traffic model is run with 4 different sizes r*c in 4 different dnesities p. For each input parameters, the set is run for 4 times. So there are 64 final-state images created in my experiment. I defined the output data as the number of steps until the traffic either hits gridlock or is in free-flow status. The stop criteria for each trial is 2000: once if the number of traffic steps exceeds 2000, it is defined as a free-flow status.
+
+During the first set of input parameters "step_1", I observed the behavior of all the 16 models. Here is the result of the first set:
+> print(step_1)
+       0.2  0.4 0.6 0.8
+20*20 2001 2001  47  44
+40*40 2001 2001  96  43
+60*60 2001 2001 202  41
+80*80 2001 2001 316  51
+According to this printed result, when the density of grid is below or equal to 0.4, the trafic never hit gridlock and the model can run forever. However, even the traffic as a whole is in free-flow status, part of the traffic can still be in traffic jam. Even when the size of grid is small, such as 20*20, there is a part of grid which has a big trunk of blue and red blocks. And the chance of a mixture of free-flow and traffic jam increases when the size of the grid is enlarged. For example, in my image of 80*80 grid with density 0.4, the number of traffic jam is 9, compared to 1, which is in size 20*20 grid.
+
+However, it is not the case that the whole grid is always in free-flow status when it is below dendity 0.4. The result "step_3" has proved this. 
+> print(step_3)
+       0.2  0.4 0.6 0.8
+20*20 2001 2001 100  22
+40*40 2001 2001 118  28
+60*60 2001 2001 142  36
+80*80 2001 1248 344  71
+Observe that when the size of grid is 80*80 and the density is 0.4, the model stops at step #1248, indicating that the traffic hits gridlock. So p=0.4 doesn't always end in an infinite free-flow status. Because the variables are randomly generated and variabaility exists, it is always possible that the traffic hits deadlock at a realatively small density and flows freely at a relatively high density. An extreme small-density case is that all the blocks in the toppest row of grid are red and all the rest of blocks in the right most column are blue.
+
+The rest of trials show how the variability and transition depend on the size and density of grid. 
+> print(step_2)
+       0.2  0.4 0.6 0.8
+20*20 2001 2001  88  17
+40*40 2001 2001  64  38
+60*60 2001 2001 199  80
+80*80 2001 2001 260  60
+> print(step_4)
+       0.2  0.4 0.6 0.8
+20*20 2001 2001  45  25
+40*40 2001 2001 101  54
+60*60 2001 2001 138  55
+80*80 2001 2001 271  51
+Horizontally, the number of steps take to hit the gridlock decreases substatially as the density of grid increases. Vertivally, this number of steps increases slowly as the size of grid increases. The verticle transition is most apparent at p=0.6. In all four experiments, the step number rises when the size increases from 20*20 to 80*80. But this characteristic becomes vague at p=0.8. The difference between step numbers at each size is small and the growth of step numbers from a smaller size grid to a bigger one even becomes negative in some cases.
+In a nutshell, the density of grid is a major determinant of the number of steps that the grid takes to hit gridlock, and the size of grid has a smaller impact on the step numbers. The variability of each different results is derived from the property of random distribution.
